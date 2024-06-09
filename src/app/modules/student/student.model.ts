@@ -53,6 +53,12 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 // const studentSchema = new Schema<Student>({
     const studentSchema = new Schema<TStudent, StudentModel>({
     id: { type: String, required: [true, "ID is required"], unique: true, trim: true },
+    user:{
+        type:Schema.Types.ObjectId,
+        required: [true, "ID is required"],
+        unique:true,
+        ref:'User',
+    },
     name: {
         type: userNameSchema,
         required: [true, "Name is required"]
@@ -69,7 +75,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
     email: { type: String, required: [true, "Email is required"], unique: true, trim: true },
     contactNo: { type: String, required: [true, "Contact number is required"], trim: true },
     emergencyContactNo: { type: String, required: [true, "Emergency contact number is required"], trim: true },
-    bloodGroup: {
+    bloogGroup: {
         type: String,
         enum: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
         trim: true
@@ -85,12 +91,14 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
         required: [true, "Local guardian information is required"]
     },
     profileImg: { type: String, trim: true },
-    isActive: {
-        type: String,
-        enum: ["active", "inactive"],
-        default: "active",
-        trim: true
-    }
+    isDeleted:{
+        type:Boolean,
+        default:false
+    },
+    
+},{toJSON: {
+    virtuals: true,
+  },
 });
 //  Creatinf Middleware 
 

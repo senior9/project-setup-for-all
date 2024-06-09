@@ -1,5 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { studentServices } from "./student.service";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
 // import Joi from "joi"
 // import studentValidationSchema from "./student.validation";
 // import {z} from "zod"
@@ -20,19 +22,10 @@ import { studentServices } from "./student.service";
 
 
 
-
-
-
-
-
-        
-
 //         const { student: studentData } = req.body;
         
 //         //data validation using Joi
 //         // const {error,value} = studentValidationSchema.validate(studentData);
-
-
 
 
 
@@ -66,45 +59,74 @@ import { studentServices } from "./student.service";
 
 // }
 
-//  get all students 
-const getAllStudents = async (req: Request, res: Response) => {
-    try {
-        const result = await studentServices.getStudentsFromDb();
-        res.status(200).json({
-            succuess: true,
-            message: "student is retrived  successfully",
-            data: result
-        })
-    } catch (error : any) {
-        res.status(500).json({
-            succuess: false,
-            message: error.message || "something went wrong",
-            error: error
-        })
+
+//  Higher order Function 
+
+const catchAsync =(fn:RequestHandler)=>{
+    return(req:Request,res:Response,next:NextFunction)=>{
+        Promise.resolve(fn(req,res,next)).catch((error)=>next(error));
     }
+
 }
+
+
+//  get all students 
+const getAllStudents:RequestHandler = catchAsync(async (req, res,next) => {
+   
+        const result = await studentServices.getStudentsFromDb();
+        sendResponse(res,{
+            statusCode: httpStatus.OK,
+            succuess: true,
+            message: " Get All  student  successfully",
+            data: result,
+        })
+    
+
+    // Toimur amoler catch error  -> Mandad amoler method 
+
+        // res.status(500).json({
+        //     succuess: false,
+        //     message: error.message || "something went wrong",
+        //     error: error
+        // })
+
+    // catch error use next function -> update method 
+    
+})
 
 // get Student Id : 
 
-const getStudentId = async (req: Request, res:Response )=>{
+const getStudentId:RequestHandler = catchAsync(async (req, res, next )=>{
 
-    try {
+    
         const {studentId} =  req.params;
         const result = await studentServices.getStudentIdFromDb(studentId);
-        res.status(200).json({
+        sendResponse(res,{
+            statusCode: httpStatus.OK,
             succuess: true,
-            message: " find student id succuessfully",
-            data: result
+            message: "get Single student  successfully",
+            data: result,
         })
 
-    } catch (error) {
-        console.log(error)
-    }
-}
+})
+
+const deleteStudent:RequestHandler = catchAsync(async (req , res, next)=>{
+        const {studentId }= req.params;
+        const result = await studentServices.deleteStdFromDb(studentId);
+        sendResponse(res,{
+            statusCode: httpStatus.OK,
+            succuess: true,
+            message: "Delete  student successfully",
+            data: result,
+        })
+
+   
+})
 
 
 export const StudentControllers = {
     // createStudent,
     getAllStudents,
-    getStudentId
+    getStudentId,
+    deleteStudent
 }

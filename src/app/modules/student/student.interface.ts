@@ -1,6 +1,6 @@
-import { Student } from './student.model';
+// import { Student } from './student.model';
 // import { StudentMethod } from './student.interface';
-import { Schema, model, connect, Model } from 'mongoose';
+import {  Model, Types } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
 export type TGuardian = {
@@ -25,23 +25,24 @@ export type TLocalGuardian = {
     address : string
 }
 
-export type TStudent ={
-    id: string;
+export type TStudent = {
+  id: string;
+  user: Types.ObjectId;
+  password: string;
   name: TUserName;
-  gender: "male" | "female";
+  gender: 'male' | 'female' | 'other';
   dateOfBirth?: string;
+  email: string;
   contactNo: string;
   emergencyContactNo: string;
-  bloodGroup:"A+"|"A-"|"B+"|"B-"|"O+"|"O-"|"AB+"|"AB-";
-  presentAddress:string;
-  permanentAddress:string;
-  email: string;
-  guardian : TGuardian;
-  localGuardian : TLocalGuardian;
+  bloogGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+  presentAddress: string;
+  permanentAddress: string;
+  guardian: TGuardian;
+  localGuardian: TLocalGuardian;
   profileImg?: string;
-  isActive: "active" | "inActive" ;
-  
-}
+  isDeleted: boolean;
+};
 
 
 // for creating static method 

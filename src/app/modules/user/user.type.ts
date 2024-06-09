@@ -2,14 +2,8 @@ export type Tuser = {
     id:string;
     password:string;
     needPasswordChange: boolean;
-    role: 'studen' | 'faculty' | 'admin' ;
+    role: 'student' | 'faculty' | 'admin' ;
     status:'in-progress'| 'blocked' ;
     isDelete: boolean;
-    
-}
-export type newUser ={
-    password:string;
-    role: string;
-    id:string;
     
 }
