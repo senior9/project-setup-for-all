@@ -1,18 +1,13 @@
-import  express, { Request, Response,NextFunction }  from "express";
+import express from "express";
 import { UserControllers } from "./user.controller";
+import { createStudentValidationZodSchema } from "../student/student.validation.zod";
+import validateRequest from "../../middleware/validateRequest";
 
 const router = express.Router();
 
 
-// Middleware for eecure  Validation 
 
-const middlWare = (req:Request,res:Response, next:NextFunction)=>{
 
-    console.log(req.body);
-    next();
+router.post('/create-student', validateRequest(createStudentValidationZodSchema), UserControllers.createStudent);
 
-}
-
-router.post('/create-student',middlWare, UserControllers.createStudent);
-
-export const  userRoutes = router;
+export const userRoutes = router;
