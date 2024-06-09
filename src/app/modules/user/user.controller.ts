@@ -1,15 +1,13 @@
-import {  RequestHandler } from "express";
+
 import { userServices } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
 
 
 //  creat new student 
-const createStudent:RequestHandler = async (req, res,next) => {
-    try {
-        
-    
+const createStudent =catchAsync( async (req, res,) => {
 
         const { password , student:studentData } = req.body;
 
@@ -41,11 +39,8 @@ const createStudent:RequestHandler = async (req, res,next) => {
             message: "student create successfully",
             data: result,
         })
-    } catch (error) {
-       next(error)
-    }
 
-}
+})
 export  const UserControllers = {
     createStudent
 }

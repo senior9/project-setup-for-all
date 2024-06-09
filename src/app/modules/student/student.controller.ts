@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import { studentServices } from "./student.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 // import Joi from "joi"
 // import studentValidationSchema from "./student.validation";
 // import {z} from "zod"
@@ -60,18 +61,11 @@ import httpStatus from "http-status";
 // }
 
 
-//  Higher order Function 
 
-const catchAsync =(fn:RequestHandler)=>{
-    return(req:Request,res:Response,next:NextFunction)=>{
-        Promise.resolve(fn(req,res,next)).catch((error)=>next(error));
-    }
-
-}
 
 
 //  get all students 
-const getAllStudents:RequestHandler = catchAsync(async (req, res,next) => {
+const getAllStudents = catchAsync(async (req, res) => {
    
         const result = await studentServices.getStudentsFromDb();
         sendResponse(res,{
@@ -110,7 +104,7 @@ const getStudentId:RequestHandler = catchAsync(async (req, res, next )=>{
 
 })
 
-const deleteStudent:RequestHandler = catchAsync(async (req , res, next)=>{
+const deleteStudent = catchAsync(async (req , res)=>{
         const {studentId }= req.params;
         const result = await studentServices.deleteStdFromDb(studentId);
         sendResponse(res,{
