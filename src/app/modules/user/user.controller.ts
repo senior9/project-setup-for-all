@@ -12,7 +12,7 @@ const createStudent =catchAsync( async (req, res,) => {
         const { password , student:studentData } = req.body;
 
 
-        const result = await userServices.createStudentDb(password,studentData);
+        const result = await userServices.createStudentIntoDb(password,studentData);
 
         // if(error){
         //     res.status(500).json({

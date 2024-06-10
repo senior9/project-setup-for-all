@@ -5,7 +5,7 @@ import { User, } from "./user.model";
 import { Tuser } from "./user.type";
 
 
-const createStudentDb = async (password: string, studentData: TStudent) => {
+const createStudentIntoDb = async (password: string, studentData: TStudent) => {
 
     const userData: Partial<Tuser> = {};
     // If password is noyt given by user 
@@ -15,7 +15,7 @@ const createStudentDb = async (password: string, studentData: TStudent) => {
     userData.role = 'student'
 
     // set manually generated ID
-    userData.id = '203010001' 
+    userData.id = '203010002' 
 
     // create a User 
     const newUser = await User.create(userData);
@@ -34,5 +34,5 @@ const createStudentDb = async (password: string, studentData: TStudent) => {
 }
 
 export const userServices = {
-    createStudentDb
+     createStudentIntoDb
 }
