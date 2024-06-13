@@ -24,3 +24,10 @@ export type TAcademicSemester = {
     endMonth:TMonths;
 
 }
+
+// academicSemester Name Code 
+
+    
+export type TacademicSemesterNameCode ={
+  [key:string]:string
+}
