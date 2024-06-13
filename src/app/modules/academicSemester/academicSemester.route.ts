@@ -15,6 +15,9 @@ router.get('/', AcademisSemesterControllers.getAllSemesters);
 // Get Single Semister 
 router.get('/:semesterId',AcademisSemesterControllers.getSingleSemesterId);
 
+// Upadte Semester Data 
+router.patch('/:semesterId',AcademisSemesterControllers.updateSingleSmester);
+
 
 
 export const AcademicSemesterRoutes = router;

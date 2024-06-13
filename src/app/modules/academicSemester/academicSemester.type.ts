@@ -31,3 +31,6 @@ export type TAcademicSemester = {
 export type TacademicSemesterNameCode ={
   [key:string]:string
 }
+
+//  update Semester Data 
+export type TSemesterUpdate = Partial<TAcademicSemester>;

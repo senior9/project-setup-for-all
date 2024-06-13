@@ -1,6 +1,6 @@
 import { academicSemesterNameCodeMapper } from "./academicSemester.constant";
 import { AcademicSemester } from "./academicSemester.model";
-import { TAcademicSemester } from "./academicSemester.type";
+import { TAcademicSemester, TSemesterUpdate } from "./academicSemester.type";
 
 
 
@@ -22,8 +22,14 @@ const getAllSemesterIntoDb = async ()=>{
 }
 
 // Get Single Semester From Query  Using FindOne
-const getSingleSemester = async (_id:string)=>{
+const getSingleSemesterFromDb = async (_id:string)=>{
     const result = await AcademicSemester.findOne({_id});
+    return result;
+}
+
+// Upadte Semester 
+const updateSemesterFromDb =async(semesterId:string,semesterData:Partial<TSemesterUpdate>)=>{
+    const result = await AcademicSemester.findByIdAndUpdate(semesterId,{$set:semesterData},{new:true,runValidators: true});
     return result;
 }
 
@@ -31,5 +37,6 @@ const getSingleSemester = async (_id:string)=>{
 export const AcademicSemesterServices = {
     createAcademicSemesterIntoDb,
     getAllSemesterIntoDb,
-    getSingleSemester
+    getSingleSemesterFromDb,
+    updateSemesterFromDb
 }
