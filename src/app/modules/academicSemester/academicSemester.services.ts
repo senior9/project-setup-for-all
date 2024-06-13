@@ -28,8 +28,14 @@ const getSingleSemesterFromDb = async (_id:string)=>{
 }
 
 // Upadte Semester 
-const updateSemesterFromDb =async(semesterId:string,semesterData:Partial<TSemesterUpdate>)=>{
-    const result = await AcademicSemester.findByIdAndUpdate(semesterId,{$set:semesterData},{new:true,runValidators: true});
+const updateSemesterFromDb =async(semesterId:string,payload:Partial<TSemesterUpdate>)=>{
+
+    if(payload.name && payload.code && academicSemesterNameCodeMapper[payload.name]!== payload.code){
+        throw new Error('Semister Code Invalid')
+    }
+
+
+    const result = await AcademicSemester.findByIdAndUpdate(semesterId,{$set:payload},{new:true,runValidators: true});
     return result;
 }
 

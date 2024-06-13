@@ -16,7 +16,7 @@ router.get('/', AcademisSemesterControllers.getAllSemesters);
 router.get('/:semesterId',AcademisSemesterControllers.getSingleSemesterId);
 
 // Upadte Semester Data 
-router.patch('/:semesterId',AcademisSemesterControllers.updateSingleSmester);
+router.patch('/:semesterId', validateRequest(AcademicSemesterValidations.updateAcademicSemesterValidationSchema),AcademisSemesterControllers.updateSingleSmester);
 
 
 

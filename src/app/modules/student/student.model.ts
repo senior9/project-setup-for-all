@@ -91,6 +91,10 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
         required: [true, "Local guardian information is required"]
     },
     profileImg: { type: String, trim: true },
+    admissionSmester:{
+        type:Schema.Types.ObjectId,
+        ref:'AcademicSemester'
+    },
     isDeleted:{
         type:Boolean,
         default:false
