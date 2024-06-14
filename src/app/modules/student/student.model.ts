@@ -77,7 +77,10 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
     emergencyContactNo: { type: String, required: [true, "Emergency contact number is required"], trim: true },
     bloogGroup: {
         type: String,
-        enum: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
+        enum: {
+            values:["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
+            message: '{VALUE} is not a valid blood group',
+        },
         trim: true
     },
     presentAddress: { type: String, required: [true, "Present address is required"], trim: true },

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Bloods } from './student.constant';
 
 const userNameSchema = z.object({
   firstName: z
@@ -40,7 +41,7 @@ export const createStudentValidationZodSchema = z.object({
   email: z.string().email(),
   contactNo: z.string(),
   emergencyContactNo: z.string(),
-  bloogGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
+  bloodGroup: z.enum([...Bloods] as [string,...string[]]).optional(),
   presentAddress: z.string(),
   permanentAddress: z.string(),
   guardian: guardianSchema,

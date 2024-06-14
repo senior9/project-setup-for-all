@@ -25,6 +25,8 @@ export type TLocalGuardian = {
     address : string
 }
 
+export type TbloodGroup = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+
 export type TStudent = {
   id: string;
   user: Types.ObjectId;
@@ -35,7 +37,7 @@ export type TStudent = {
   email: string;
   contactNo: string;
   emergencyContactNo: string;
-  bloogGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+  bloogGroup?:TbloodGroup ;
   presentAddress: string;
   permanentAddress: string;
   guardian: TGuardian;
