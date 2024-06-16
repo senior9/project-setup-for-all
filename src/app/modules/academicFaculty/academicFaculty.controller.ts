@@ -31,8 +31,8 @@ const getAllFaculties = catchAsync(async(req,res)=>{
 
 // get Single Semester Using Req Response 
 const getSingleFacultyId = catchAsync(async(req,res)=>{
-    const {semesterId} = req.params;
-    const result = await academicFacultyServices.getSingleFacultyFromDb(semesterId);
+    const {facultyId} = req.params;
+    const result = await academicFacultyServices.getSingleFacultyFromDb(facultyId);
     sendResponse(res,{
         statusCode: httpStatus.OK,
         succuess: true,

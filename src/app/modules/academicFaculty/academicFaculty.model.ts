@@ -10,6 +10,8 @@ const academicFacultySchema = new Schema<TacademicFaculty>({
      unique:true
     }
 
+},{
+    timestamps:true
 })
 
 
