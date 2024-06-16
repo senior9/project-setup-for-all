@@ -9,19 +9,19 @@ const createAcademicFacultyIntoDb = async (payload: TacademicFaculty ) => {
 }
 
 // Get All Semester From Db Use Find Query  
-const getAllSemesterIntoDb = async ()=>{
+const getAllFacultyIntoDb = async ()=>{
     const result = await academicFaculty.find();
     return result;
 }
 
 // Get Single Semester From Query  Using FindOne
-const getSingleSemesterFromDb = async (_id:string)=>{
+const getSingleFacultyFromDb = async (_id:string)=>{
     const result = await academicFaculty.findOne({_id});
     return result;
 }
 
 // Upadte Semester 
-const updateSemesterFromDb =async(semesterId:string,payload:Partial<TAcademicFacultyUpdate>)=>{
+const updateFacultyFromDb =async(semesterId:string,payload:Partial<TAcademicFacultyUpdate>)=>{
 
     const result = await academicFaculty.findByIdAndUpdate(semesterId,{$set:payload},{new:true,runValidators: true});
     return result;
@@ -30,7 +30,7 @@ const updateSemesterFromDb =async(semesterId:string,payload:Partial<TAcademicFac
 
 export const academicFacultyServices = {
     createAcademicFacultyIntoDb,
-    getAllSemesterIntoDb,
-    getSingleSemesterFromDb,
-    updateSemesterFromDb
+    getAllFacultyIntoDb,
+    getSingleFacultyFromDb,
+    updateFacultyFromDb
 }
