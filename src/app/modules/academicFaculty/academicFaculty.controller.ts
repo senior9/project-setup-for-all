@@ -19,7 +19,7 @@ const createAcademicFaculty = catchAsync(async(req,res)=>{
 
 
 // Get All semisters Rsponse Request 
-const getAllSemesters = catchAsync(async(req,res)=>{
+const getAllFaculties = catchAsync(async(req,res)=>{
     const result = await academicFacultyServices.getAllFacultyIntoDb();
     sendResponse(res,{
         statusCode: httpStatus.OK,
@@ -44,9 +44,9 @@ const getSingleFacultyId = catchAsync(async(req,res)=>{
 // Update Sigle Smester 
 
 const updateSingleFaculty = catchAsync(async(req,res)=>{
-    const {semesterId} = req.params;
-    const semesterData = req.body;
-    const result = await academicFacultyServices.updateFacultyFromDb(semesterId,semesterData);
+    const {facultyId} = req.params;
+    const facultyData = req.body;
+    const result = await academicFacultyServices.updateFacultyFromDb(facultyId,facultyData);
     sendResponse(res,{
         statusCode: httpStatus.OK,
         succuess: true,
@@ -55,9 +55,9 @@ const updateSingleFaculty = catchAsync(async(req,res)=>{
     })
 })
 
-export const AcademisSemesterControllers ={
+export const AcademicFacultyControllers ={
     createAcademicFaculty,
-    getAllSemesters,
+    getAllFaculties,
     getSingleFacultyId,
     updateSingleFaculty
 }
