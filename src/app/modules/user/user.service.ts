@@ -1,4 +1,3 @@
-import { TAcademicSemester } from './../academicSemester/academicSemester.type';
 import config from "../../config";
 import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { TStudent } from "../student/student.interface";
@@ -6,6 +5,9 @@ import { Student } from "../student/student.model";
 import { User, } from "./user.model";
 import { Tuser } from "./user.type";
 import { generateStudentId } from "./user.utils";
+import mongoose from 'mongoose';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 
 const createStudentIntoDb = async (password: string, payload: TStudent) => {
@@ -21,25 +23,45 @@ const createStudentIntoDb = async (password: string, payload: TStudent) => {
 
     // Find Academic Semister Info 
 
-    const admissionSemester = await AcademicSemester.findById(payload.admissionSmester, )
+    const admissionSemester = await AcademicSemester.findById(payload.admissionSmester, );
 
-    // set manually generated ID
+    // Session use Transction & Rollback 
+    const session = await mongoose.startSession();
+
+    try {
+
+     session.startTransaction();
+          // set manually generated ID
     userData.id = await generateStudentId(admissionSemester) ;
 
-    // create a User 
-    const newUser = await User.create(userData);
+    // create a User (Start Tansction-1)
+    const newUser = await User.create([userData], {session});
+
 
     // craete a student 
-    if(Object.keys(newUser).length){
+    if(!newUser.length){ //When i use sesson it must be an array thay why Object.keys(newUser.length removed)
+        throw new AppError(httpStatus.BAD_REQUEST,'Failed to create User')
+    }
         //  set id, _id as user 
-        payload.id = newUser.id;
-        payload.user = newUser._id //reference _id
+        payload.id = newUser[0].id;
+        payload.user = newUser[0]._id //reference _id
 
-        const newStudent = await Student.create(payload);
+        // start transaction - 2 
+        const newStudent = await Student.create([payload], {session});
+        if (!newStudent.length) {
+            throw new AppError(httpStatus.BAD_REQUEST,'failed to create Student ')
+        }
+
+        await session.commitTransaction();
+        await session.endSession();
+
         return newStudent;
     }
-
-    return newUser;
+ catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new Error('Failed to create student');
+    }
 }
 
 export const userServices = {

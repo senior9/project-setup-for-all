@@ -44,6 +44,7 @@ export type TStudent = {
   localGuardian: TLocalGuardian;
   profileImg?: string;
   admissionSmester:Types.ObjectId;
+  academicDepartment:Types.ObjectId;
   isDeleted: boolean;
 };
 
@@ -65,4 +66,4 @@ export interface StudentModel extends Model<TStudent> {
 // export type StudentModel = Model<TStudent, Record<string, never>, StudentMethod>;
 // Instance method end 
 
-
+export type TStudentUpdate=Partial<TStudent> 

@@ -98,6 +98,10 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
         type:Schema.Types.ObjectId,
         ref:'AcademicSemester'
     },
+    academicDepartment:{
+        type:Schema.Types.ObjectId,
+        ref:'academicDepartment'
+    },
     isDeleted:{
         type:Boolean,
         default:false
@@ -106,17 +110,13 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 },{toJSON: {
     virtuals: true,
   },
+  
 });
 //  Creatinf Middleware 
 
 studentSchema.pre('save', function(){
     
 })
-
-
-
-
-
 
 
 // creating custom static method 

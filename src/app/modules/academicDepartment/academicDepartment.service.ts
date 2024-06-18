@@ -10,13 +10,13 @@ const createAcademicDepartmentIntoDb = async (payload: TAcademicDepartment ) => 
 
 // Get All Semester From Db Use Find Query  
 const getAllDepartmentIntoDb = async ()=>{
-    const result = await academicDepartment.find();
+    const result = await academicDepartment.find().populate('academicFaculty');
     return result;
 }
 
 // Get Single Semester From Query  Using FindOne
 const getSingleDepartmentFromDb = async (_id:string)=>{
-    const result = await academicDepartment.findOne({_id});
+    const result = await academicDepartment.findOne({_id}).populate('academicFaculty');
     return result;
 }
 
