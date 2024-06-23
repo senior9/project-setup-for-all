@@ -11,6 +11,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 // console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
 export default {
+  node_env:process.env.NODE_ENV,
   port: process.env.PORT,
   database_url: process.env.DATABASE_URL,
   default_pass:process.env.DEFAULT_PASS,
