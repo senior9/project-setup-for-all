@@ -36,8 +36,22 @@ import { TStudentUpdate } from "./student.interface";
 // //  Instance method close
 // }
 
-const getStudentsFromDb = async () => {
-    const result = await Student.find().populate('user').populate({
+const getStudentsFromDb = async (query) => {
+    let searchTerm= '';
+
+    if(query?.searchTerm){
+        searchTerm=query?.searchTerm
+    }
+
+
+
+    const result = await Student.find({
+        $or:['email','name.firstName','presentAdress'].map((field)=>({
+            [field]:{$regex:searchTerm,$options:'i'}
+        }))
+
+
+    }).populate('user').populate({
         path: 'academicDepartment', /// very very important point 
         populate: {
             path: 'academicFaculty'  /// very very important point 

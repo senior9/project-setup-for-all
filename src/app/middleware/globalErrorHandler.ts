@@ -6,6 +6,7 @@ import handleZodError from "../errors/handleZodError";
 import handleValidationError from "../errors/handleValidationError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
+import AppError from "../errors/AppError";
 
 
 
@@ -45,6 +46,19 @@ if(error instanceof ZodError){
     statusCode = simplifiedError?.statusCode;
     message= simplifiedError?.message;
     errorSources= simplifiedError.errorSources;
+}else if (error instanceof AppError){ //handle appError
+    statusCode = error?.statusCode;
+    message= error?.message;
+    errorSources=[ {
+        path:'',
+        message:error.message
+    }];
+}else if (error instanceof Error){ //handle error for Error
+    message= error?.message;
+    errorSources=[ {
+        path:'',
+        message:error.message
+    }];
 }
 
     return res.status(statusCode).json({
