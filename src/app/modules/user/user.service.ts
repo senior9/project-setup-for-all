@@ -25,6 +25,10 @@ const createStudentIntoDb = async (password: string, payload: TStudent) => {
 
     const admissionSemester = await AcademicSemester.findById(payload.admissionSmester, );
 
+    if (!admissionSemester) {
+        throw new Error('Admission semester not found');
+    }
+
     // Session use Transction & Rollback 
     const session = await mongoose.startSession();
 

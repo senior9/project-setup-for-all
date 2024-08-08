@@ -36,28 +36,50 @@ import { TStudentUpdate } from "./student.interface";
 // //  Instance method close
 // }
 
-const getStudentsFromDb = async (query) => {
+const getStudentsFromDb = async (query:Record<string,unknown>) => {
+    const searchAbleFields =['email','name.firstName','presentAdress'];
     let searchTerm= '';
+    const queryObject = {...query} //copy Query 
 
     if(query?.searchTerm){
-        searchTerm=query?.searchTerm
+        searchTerm=query?.searchTerm as string
     }
 
+    // takeout SearchQuery for chaining method for use filtering thats why define search query in different memory
+const searchQuery = Student.find({
+    $or:searchAbleFields.map((field)=>({
+        [field]:{$regex:searchTerm,$options:'i'}
+    }))
+})
 
+//filtering
+const excludes = ['searchTerm','sort','limit'];
+excludes.forEach((el)=>delete queryObject[el]);
+console.log(query, queryObject) 
 
-    const result = await Student.find({
-        $or:['email','name.firstName','presentAdress'].map((field)=>({
-            [field]:{$regex:searchTerm,$options:'i'}
-        }))
-
-
-    }).populate('user').populate({
+// use query for filtering data
+    const filterQuery = searchQuery.find(queryObject).populate('user').populate({
         path: 'academicDepartment', /// very very important point 
         populate: {
             path: 'academicFaculty'  /// very very important point 
         }
     }).populate('admissionSmester');
-    return result;
+
+    // sorting method use chaining
+    let sort = '-createdAt';
+    if (query.sort) {
+        sort = query.sort as string;
+    }
+   const sortQuery = filterQuery.sort(sort);
+
+   //limit method use chaining
+    let limit = 1;
+    if (query.limit) {
+        limit = query.limit as number;
+    }
+    const limitQuery = await sortQuery.limit(limit);
+
+    return limitQuery;
 }
 
 const getStudentIdFromDb = async (id: string) => {
