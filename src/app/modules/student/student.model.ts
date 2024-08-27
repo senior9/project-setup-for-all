@@ -4,10 +4,10 @@ import { Schema, model } from 'mongoose';
 
 // User Schema
 const userNameSchema = new Schema<TUserName>({
-    firstName: { 
-        type: String, 
-        required: [true, "First name is required"], 
-        trim: true, 
+    firstName: {
+        type: String,
+        required: [true, "First name is required"],
+        trim: true,
 
         //  validation function  if anyone can input ultapalta 
         // validate :{
@@ -20,9 +20,9 @@ const userNameSchema = new Schema<TUserName>({
         // 
     },
     middleName: { type: String, trim: true },
-    lastName: { 
-        type: String, 
-        required: [true, "Last name is required"], 
+    lastName: {
+        type: String,
+        required: [true, "Last name is required"],
         trim: true,
         // validate:{
         //     validator: (value:string)=>validator.isAlpha(value),
@@ -51,13 +51,13 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 
 // Student Schema
 // const studentSchema = new Schema<Student>({
-    const studentSchema = new Schema<TStudent, StudentModel>({
+const studentSchema = new Schema<TStudent, StudentModel>({
     id: { type: String, required: [true, "ID is required"], unique: true, trim: true },
-    user:{
-        type:Schema.Types.ObjectId,
+    user: {
+        type: Schema.Types.ObjectId,
         required: [true, "ID is required"],
-        unique:true,
-        ref:'User',
+        unique: true,
+        ref: 'User',
     },
     name: {
         type: userNameSchema,
@@ -78,7 +78,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
     bloogGroup: {
         type: String,
         enum: {
-            values:["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
+            values: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
             message: '{VALUE} is not a valid blood group',
         },
         trim: true
@@ -94,35 +94,54 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
         required: [true, "Local guardian information is required"]
     },
     profileImg: { type: String, trim: true },
-    admissionSmester:{
-        type:Schema.Types.ObjectId,
-        ref:'AcademicSemester'
+    admissionSmester: {
+        type: Schema.Types.ObjectId,
+        ref: 'AcademicSemester'
     },
-    academicDepartment:{
-        type:Schema.Types.ObjectId,
-        ref:'academicDepartment'
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        ref: 'academicDepartment'
     },
-    isDeleted:{
-        type:Boolean,
-        default:false
+    isDeleted: {
+        type: Boolean,
+        default: false
     },
-    
-},{toJSON: {
-    virtuals: true,
-  },
-  
-});
-//  Creatinf Middleware 
 
-studentSchema.pre('save', function(){
-    
-})
+}, {
+    toJSON: {
+        virtuals: true,
+    },
+
+});
+
+// copy from persian bhai 
+//virtual
+studentSchema.virtual('fullName').get(function () {
+    return this?.name?.firstName + this?.name?.middleName + this?.name?.lastName;
+});
+
+// Query Middleware
+studentSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+
+studentSchema.pre('findOne', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+
+studentSchema.pre('aggregate', function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+    next();
+});
+
 
 
 // creating custom static method 
 
-studentSchema.statics.isUserExist = async function(id:string){
-    const existingUser = await Student.findOne({id:id});
+studentSchema.statics.isUserExist = async function (id: string) {
+    const existingUser = await Student.findOne({ id: id });
     return existingUser;
 }
 // custom static method end
