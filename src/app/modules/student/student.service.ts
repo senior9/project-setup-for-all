@@ -127,6 +127,8 @@ const getStudentIdFromDb = async (id: string) => {
     }).populate('admissionSmester');
     return result;
 }
+
+
 const updateStudentIdIntoDb = async (id: string, payload: Partial<TStudentUpdate>) => {
 
     //Update for Primative and Non Primative Data from Database 
