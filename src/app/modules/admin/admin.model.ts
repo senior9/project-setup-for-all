@@ -1,10 +1,9 @@
 import { model, Schema } from "mongoose";
-import { FacultyModel, TFaculty, TUserName } from "./faculty.type";
-import { BloodGroup, Gender } from "./faculty.contstant";
+import { AdminModel, TAdmin, TUserName } from "./admin.type";
+import { BloodGroup, Gender } from "./admin.constant";
 
 
 // UserNameSchema 
-
 const UserNameSchema = new Schema<TUserName>({
     firstName:{
         type:String,
@@ -22,10 +21,8 @@ const UserNameSchema = new Schema<TUserName>({
     }
 })
 
-
-
-// Faculty Schema
-const facultySchema = new Schema <TFaculty,FacultyModel >({
+// Admin Schema
+const adminSchema = new Schema <TAdmin,AdminModel >({
     id:{type:String, required:[true,"ID is required"], unique:true, trim:true},
     user:{
         type:Schema.Types.ObjectId,
@@ -86,11 +83,6 @@ const facultySchema = new Schema <TFaculty,FacultyModel >({
     profileImage:{
         type:String
     },
-    academicDepartment:{
-        type:Schema.Types.ObjectId,
-        required:[true,"academicDepartment is required"],
-        ref:'User'
-    },
     isDeleted:{
         type:Boolean,
         default:false
@@ -102,33 +94,34 @@ const facultySchema = new Schema <TFaculty,FacultyModel >({
 
 });
 
-// Virtual 
-facultySchema.virtual('fullName').get(function(){
+// Virtual
+adminSchema.virtual('fullName').get(function(){
     return this?.name?.firstName + this?.name?.middleName + this?.name?.lastName
 });
 
-
 //  Filterout Deleted Documents 
-facultySchema.pre('find', function(next){
-    this.find({isDeleted:{$ne:true}});
-    next();
+adminSchema.pre('find', function(next){
+ this.find({isDeleted:{$ne:true}});
+ next();
 })
-facultySchema.pre('findOne', function(next){
-    this.find({isDeleted:{$ne:true}});
-    next();
-})
-facultySchema.pre("aggregate", function(next){
-    this.pipeline().unshift({$match:{isDeleted:{$ne:true}}});
+
+adminSchema.pre('findOne', function(next){
+    this.findOne({isDeleted:{$ne:true}});
     next();
 });
 
-// Check If User Exist or not 
+adminSchema.pre('aggregate',function(next){
+    this.pipeline().unshift({$match:{isDeleted:{$ne:true}}});
+    next();
+})
 
-facultySchema.statics.isUserExist = async function(id: string){
-    const existingUser = await Faculty.findOne({id:id});
+// Check If User Exist or not 
+adminSchema.statics.isUserExist= async function(id:string){
+    const existingUser = await Admin.findOne({id:id});
     return existingUser;
 }
 
 
-// Create the Faculty Model 
-export const Faculty = model<TFaculty, FacultyModel>('Faculty',facultySchema)
+// create Admin Model 
+
+export const Admin= model<TAdmin, AdminModel>('Admin',adminSchema) 

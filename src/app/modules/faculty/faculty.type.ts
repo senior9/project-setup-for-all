@@ -3,7 +3,7 @@ import { TBloodGroup, TGender } from "./faculty.contstant";
 
 
 // 1. Create an interface representing a document in MongoDB.
-export type TUsername = {
+export type TUserName = {
     firstName: string;
     middleName:string;
     lastName: string;
@@ -13,7 +13,7 @@ export type TFaculty = {
     id: string;
     user: Types.ObjectId;
     designation: string;
-    name:TUsername;
+    name:TUserName;
     gender:TGender;
     dateOfBirth?:Date;
     email:string;

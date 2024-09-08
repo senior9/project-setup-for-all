@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { BloodGroup, Gender } from "./faculty.contstant";
+import { BloodGroup, Gender } from "./admin.constant";
+
 
 const UserNameValidationSchema = z.object({
     firstName:z.string().min(1).max(20).refine((value)=>/^[A-Z]/.test(value),{
@@ -9,7 +10,7 @@ const UserNameValidationSchema = z.object({
     lastName: z.string(),
 });
 
-export const createFacultyValidationZodSchema = z.object({
+export const createAdminValidationZodSchema = z.object({
     body:z.object({
         password:z.string().max(20) ,
         faculty:z.object({
@@ -27,7 +28,8 @@ export const createFacultyValidationZodSchema = z.object({
         })
     })
 
-})
+});
+
 
 const UpdateUserNameValidationSchema = z.object({
     firstName:z.string().min(1).max(20).optional(),
@@ -35,7 +37,8 @@ const UpdateUserNameValidationSchema = z.object({
     lastName: z.string().optional(),
 });
 
-export const UpdateFacultyValidationZodSchema = z.object({
+
+export const UpdateAdminValidationZodSchema = z.object({
     body:z.object({
         password:z.string().max(20) ,
         faculty:z.object({
@@ -53,9 +56,9 @@ export const UpdateFacultyValidationZodSchema = z.object({
         })
     })
 
-})
+});
 
-export const facultyValidation ={
-    createFacultyValidationZodSchema,
-    UpdateFacultyValidationZodSchema
+export const AdminValidation = {
+    createAdminValidationZodSchema,
+    UpdateAdminValidationZodSchema
 }
