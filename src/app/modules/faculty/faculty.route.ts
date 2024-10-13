@@ -9,12 +9,12 @@ const router =express.Router();
 
 
 router.get('/',facultyControllers.getAllFaculties);
-router.get('/:facultyId',facultyControllers.getFacultyId);
+router.get('/:id',facultyControllers.getFacultyId);
 
 
-router.patch('/:facultyId',validateRequest(UpdateFacultyValidationZodSchema), facultyControllers.updateFaculty)
+router.patch('/:id',validateRequest(UpdateFacultyValidationZodSchema), facultyControllers.updateFaculty)
 
-router.delete('/:facultyId', facultyControllers.deleteFaculty);
+router.delete('/:id', facultyControllers.deleteFaculty);
 
 export const facultyRoutes = router;
 

@@ -39,7 +39,7 @@ const moduleRoutes =[
         route:facultyRoutes
     },
     {
-        path:'/admin',
+        path:'/admins',
         route:adminRoutes
     },
     

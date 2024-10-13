@@ -22,8 +22,8 @@ const getAllFaculties =catchAsync(async(req,res)=>{
 //  get faculty single Id
 
 const getFacultyId:RequestHandler = catchAsync(async(req,res,next)=>{
-    const {facultyId}= req.params;
-    const result = await facultyServices.getFacultyIdFromDb(facultyId);
+    const {id}= req.params;
+    const result = await facultyServices.getFacultyIdFromDb(id);
     sendResponse(res,{
         statusCode: httpStatus.OK,
         succuess:true,
@@ -35,9 +35,9 @@ const getFacultyId:RequestHandler = catchAsync(async(req,res,next)=>{
 // Update Faculty 
 
 const updateFaculty:RequestHandler =catchAsync(async(req,res,next)=>{
-    const {facultyId} = req.params;
+    const {id} = req.params;
     const {faculty} = req.body;
-    const result = await facultyServices.updateFacultyIdIntoDb(facultyId,faculty);
+    const result = await facultyServices.updateFacultyIdIntoDb(id,faculty);
     sendResponse(res,{
         statusCode:httpStatus.OK,
         succuess:true,
@@ -48,8 +48,8 @@ const updateFaculty:RequestHandler =catchAsync(async(req,res,next)=>{
 
 // Delete faculty
 const deleteFaculty:RequestHandler= catchAsync(async(req,res,next)=>{
-    const {facultyId} = req.params;
-    const result = await facultyServices.deleteFacultyFromDb(facultyId);
+    const {id} = req.params;
+    const result = await facultyServices.deleteFacultyFromDb(id);
     sendResponse(res,{
         statusCode:httpStatus.OK,
         succuess:true,

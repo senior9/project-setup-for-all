@@ -119,7 +119,7 @@ return result;
 
 const getStudentIdFromDb = async (id: string) => {
     // Find student from another method -> aggregate([{$match:{id}}])
-    const result = await Student.findOne({ id }).populate('user').populate({
+    const result = await Student.findById( id ).populate('user').populate({
         path: 'academicDepartment', /// very very important point 
         populate: {
             path: 'academicFaculty'  /// very very important point 
@@ -159,7 +159,7 @@ const updateStudentIdIntoDb = async (id: string, payload: Partial<TStudentUpdate
     }
     console.log(modifiedUpdatedData);
     // Find student from another method -> aggregate([{$match:{id}}])
-    const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, { new: true, runValidators: true })
+    const result = await Student.findByIdAndUpdate( id , modifiedUpdatedData, { new: true, runValidators: true })
     return result;
 }
 
@@ -170,12 +170,16 @@ const deleteStdFromDb = async (id: string) => {
     try {
         // SESSION START 
         session.startTransaction()
-        const deleteStudent = await Student.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
+        const deleteStudent = await Student.findByIdAndUpdate( id , { isDeleted: true }, { new: true, session });
         if (!deleteStudent) {
             throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete Student ')
         }
 
-        const deleteUser = await User.findOneAndUpdate({ id }, { isDeleted: true }, { new: true, session });
+        // get user id from deleted student 
+        
+        const userId = deleteStudent.user;
+
+        const deleteUser = await User.findByIdAndUpdate( userId , { isDeleted: true }, { new: true, session });
         if (!deleteUser) {
             throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user ')
         }
