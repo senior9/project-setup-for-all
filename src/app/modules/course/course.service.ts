@@ -1,9 +1,10 @@
 import { Course } from "./course.model"
+import { TCourse } from "./course.type";
 
 
 //create Course 
-const createCourseIntoDb = async()=>{
-    const result = await Course.create();
+const createCourseIntoDb = async(payload:TCourse)=>{
+    const result = await Course.create(payload);
     return result;
 };
 
