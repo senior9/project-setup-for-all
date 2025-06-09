@@ -17,7 +17,7 @@ const getFacultyFromDb = async (query:Record<string,unknown>)=>{
             path: "academicFaculty"
         }
         
-    }).populate('admissionSmester'),query).search(facultySearchableFields).filter().sort().paginate().fields();
+    }),query).search(facultySearchableFields).filter().sort().paginate().fields();
     const result = await facultyQuery.modelQuery;
     return result; 
 
@@ -26,13 +26,13 @@ const getFacultyFromDb = async (query:Record<string,unknown>)=>{
 
 // FInd Faculty Id From Db 
 
-const getFacultyIdFromDb = async( id: string)=>{
-    const result = await Faculty.findOne({id}).populate('user').populate({
+const getFacultyIdFromDb = async( _id: string)=>{
+    const result = await Faculty.findOne({_id}).populate('user').populate({
         path:'academicDepartment',
         populate:{
             path:"academicFaculty"
         }
-    }).populate('admissionSmester')
+    })
     return result;
 }
 
