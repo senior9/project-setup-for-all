@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { userStatus } from "./user.constant";
+import { string } from "joi";
 
 // Define the Zod schema for validation
 const userZodValidationSchema = z.object({
@@ -16,6 +18,12 @@ const userZodValidationSchema = z.object({
     // isDelete: z.boolean().optional().default(false) // // no need to validate 
   });
 
+  const changeStatusValidationSchema = z.object({
+    body:z.object({
+      status:z.enum([...userStatus] as [string,...string[]])
+    })
+  })
   export const userValidationByZod = {
-    userZodValidationSchema
+    userZodValidationSchema,
+    changeStatusValidationSchema
   }

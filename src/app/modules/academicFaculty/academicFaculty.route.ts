@@ -5,13 +5,14 @@ import { AcademicFacultyValidations } from './academicFaculty.validation';
 
 
 
+
 const router = express.Router();
 
 
 router.post('/create-academic-faculties',validateRequest(AcademicFacultyValidations.createAcademicFacultyValidationSchema), AcademicFacultyControllers.createAcademicFaculty);
 
 // get Route 
-router.get('/', AcademicFacultyControllers.getAllFaculties);
+router.get('/',AcademicFacultyControllers.getAllFaculties);
 
 // Get Single Semister 
 router.get('/:facultyId',AcademicFacultyControllers.getSingleFacultyId);

@@ -9,6 +9,8 @@ import { RequestHandler } from "express";
 
 // get all Faculty 
 const getAllFaculties =catchAsync(async(req,res)=>{
+    console.log(req.cookies);
+
     const result = await facultyServices.getFacultyFromDb(req.query);
     sendResponse(res,{
         statusCode:httpStatus.OK,
@@ -23,6 +25,7 @@ const getAllFaculties =catchAsync(async(req,res)=>{
 
 const getFacultyId:RequestHandler = catchAsync(async(req,res,next)=>{
     const {id}= req.params;
+    
     const result = await facultyServices.getFacultyIdFromDb(id);
     sendResponse(res,{
         statusCode: httpStatus.OK,

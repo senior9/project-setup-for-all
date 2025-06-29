@@ -3,6 +3,8 @@ import { userServices } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
+import { JwtPayload } from "jsonwebtoken";
+
 
 
 
@@ -12,7 +14,7 @@ const createStudent =catchAsync( async (req, res,) => {
         const { password , student:studentData } = req.body;
 
 
-        const result = await userServices.createStudentIntoDb(password,studentData);
+        const result = await userServices.createStudentIntoDb(req.file,password,studentData);
 
         // if(error){
         //     res.status(500).json({
@@ -59,6 +61,7 @@ const createfaculty = catchAsync(async(req,res)=>{
 
 const craeteAdmin = catchAsync(async(req,res)=>{
     const {password, admin:adminData} =req.body;
+    // console.log(req.body)
     const result = await userServices.createAdminIntoDb(password, adminData);
     sendResponse(res,{
         statusCode:httpStatus.OK,
@@ -67,8 +70,38 @@ const craeteAdmin = catchAsync(async(req,res)=>{
         data:result,
     })
 })
+//change status 
+const changeStatus = catchAsync(async(req,res)=>{
+   const id = req.params.id
+    const result = await userServices.changeStatus(id,req.body);
+    sendResponse(res,{
+        statusCode:httpStatus.OK,
+        succuess:true,
+        message: "Status Change successfully",
+        data:result,
+    })
+})
+//get Me  only 
+const getMe = catchAsync(async(req,res)=>{
+    // const token = req.headers.authorization;
+    // if(!token){
+    //     throw new AppError(httpStatus.NOT_FOUND,'Token not found')
+    // }
+
+    const {userId,role} = req.user!;
+
+    const result = await userServices.getMe(userId,role);
+    sendResponse(res,{
+        statusCode:httpStatus.OK,
+        succuess:true,
+        message: " User get successfully",
+        data:result,
+    })
+})
 export  const UserControllers = {
     createStudent,
     createfaculty,
-    craeteAdmin
+    craeteAdmin,
+    changeStatus,
+    getMe
 }

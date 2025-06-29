@@ -2,10 +2,12 @@ import express from 'express';
 import { CourseControllers } from './course.controller';
 import validateRequest from '../../middleware/validateRequest';
 import { courseValidation, createCourseValidationSchema } from './course.validation';
+import auth from '../../middleware/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 
-router.get('/',CourseControllers.getAllCourses);
+router.get('/',auth(USER_ROLE.admin),CourseControllers.getAllCourses);
 router.get('/:id',CourseControllers.getSingleCourse);
 
 router.post("/create-course", validateRequest(createCourseValidationSchema),CourseControllers.createCourse)

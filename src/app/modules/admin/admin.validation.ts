@@ -13,7 +13,7 @@ const UserNameValidationSchema = z.object({
 export const createAdminValidationZodSchema = z.object({
     body:z.object({
         password:z.string().max(20) ,
-        faculty:z.object({
+        admin:z.object({
             designation:z.string(),
             name:UserNameValidationSchema,
             gender:z.enum([...Gender] as [string,...string[]]),
